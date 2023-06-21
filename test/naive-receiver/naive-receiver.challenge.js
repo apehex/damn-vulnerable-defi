@@ -38,6 +38,10 @@ describe('[Challenge] Naive receiver', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        const ETH = await pool.ETH();
+        const ForFeeFactory = await ethers.getContractFactory('ForFee', deployer);
+        const forfee = await ForFeeFactory.deploy(pool.address);
+        await forfee.t(receiver.address);
     });
 
     after(async function () {
